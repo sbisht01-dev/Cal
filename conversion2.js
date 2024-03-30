@@ -59,6 +59,7 @@ function parseLineFile2(line) {
     };
   }
 }
+
 // Function to process the second file
 function processFileForSecondFile(inputData) {
   const lines = inputData.split("\n").filter((line) => line.trim() !== "");
@@ -68,7 +69,23 @@ function processFileForSecondFile(inputData) {
     parsedData.push(parseLineFile2(line));
   }
 
-  console.log(parsedData);
+  // Convert parsedData to JSON string with indentation
+  const jsonData = JSON.stringify(parsedData, null, 2);
+
+  // Create a Blob object containing the JSON data
+  const blob = new Blob([jsonData], { type: 'application/json' });
+
+  // Create a link element
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'parsedData.json';
+
+  // Append the link to the document body and trigger a click event to download the file
+  document.body.appendChild(a);
+  a.click();
+
+  // Remove the link from the document body
+  document.body.removeChild(a);
 }
 
 // Function to read input data from a JSON file for the second file using fetch
@@ -79,7 +96,5 @@ function readInputFromFileForSecondFile(filePath) {
     .catch((error) => console.error("Error:", error));
 }
 
-// Usage: Replace 'input.json' with your JSON file name or path
-readInputFromFileForSecondFile("552.json");
-readInputFromFileForSecondFile("280.json");
-console.log("w");
+// Usage: Replace 'Party.json' with your JSON file name or path
+readInputFromFileForSecondFile("Party.json");
